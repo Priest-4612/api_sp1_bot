@@ -25,3 +25,10 @@ Exit_Code = {
     'SUCCESS': 0,
     'ERROR': 1,
 }
+
+
+Homework_Status = {
+    'reviewing': 'работа взята в ревью',
+    'approved': 'ревью успешно пройдено',
+    'rejected': 'в работе есть ошибки, нужно поправить'
+}
