@@ -1,10 +1,8 @@
 import logging
-from logging.handlers import RotatingFileHandler
 import os
 import time
 
 import requests
-from requests.models import requote_uri
 import telegram
 from dotenv import load_dotenv
 
@@ -54,9 +52,9 @@ bot = telegram.Bot(token=TELEGRAM_TOKEN)
 def get_homeworks(current_timestamp):
     payload = {'from_date': current_timestamp}
     params_request = P_PARAMS.format(
-            url=URL,
-            header=HEADERS,
-            params=payload
+        url=URL,
+        header=HEADERS,
+        params=payload
     )
 
     try:
@@ -85,10 +83,10 @@ def get_homeworks(current_timestamp):
     for key in homeworks_json.keys():
         if key in REQUEST_ATTRIBUTE_ERROR:
             raise AttributeError(P_REQUEST_ERROR.format(
-            name='API. Практикум.Домашка вернул ошибку. ',
-            exception=homeworks_json['code'],
-            params=params_request
-        ))
+                name='API. Практикум.Домашка вернул ошибку. ',
+                exception=homeworks_json['code'],
+                params=params_request
+            ))
 
     return homeworks_json
 
@@ -99,7 +97,11 @@ def parse_homework_status(homework):
         raise AttributeError(P_STATUS_ERROR.format(status=status))
 
     verdict = VERDICTS[status]
-    return P_TELEGRAM.format(homework_name=homework['homework_name'], verdict=verdict)
+    return P_TELEGRAM.format(
+        homework_name=homework['homework_name'],
+        verdict=verdict
+    )
+
 
 def send_message(message):
     return bot.send_message(CHAT_ID, message)
@@ -131,12 +133,17 @@ def main():
     while True:
         try:
             homeworks_json = get_homeworks(current_timestamp)
-            current_timestamp = homeworks_json.get('current_date', current_timestamp)
+            current_timestamp = homeworks_json.get(
+                'current_date', current_timestamp
+            )
             homeworks = homeworks_json['homeworks']
             if homeworks:
-                message_status = send_message(parse_homework_status(homeworks[0]))
+                message_status = send_message(
+                    parse_homework_status(homeworks[0])
+                )
                 logging.info(
-                    f'Собщение отправлено пользователю: {message_status["chat"]["username"]}'
+                    'Собщение отправлено пользователю:'
+                    f' {message_status["chat"]["username"]}'
                     f'\nТекст сообщения: {message_status["text"]}'
                 )
                 time.sleep(timeout)
