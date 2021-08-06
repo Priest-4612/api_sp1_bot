@@ -143,6 +143,11 @@ def main():
 
         except Exception as exception:
             logging.error(exception, exc_info=True)
+            try:
+                send_message(exception)
+            except Exception as error:
+                logging.error(error, exc_info=True)
+
             time.sleep(timeout)
 
 
