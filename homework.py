@@ -77,7 +77,7 @@ def get_homeworks(current_timestamp):
             exception=exception,
             params=params_request
         ))
-
+    print(homework_statuses)
     homeworks_json = homework_statuses.json()
 
     for key in homeworks_json.keys():
@@ -146,7 +146,7 @@ def main():
                     f' {message_status["chat"]["username"]}'
                     f'\nТекст сообщения: {message_status["text"]}'
                 )
-                time.sleep(timeout)
+            time.sleep(timeout)
 
         except Exception as exception:
             logging.error(exception, exc_info=True)
