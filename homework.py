@@ -45,6 +45,9 @@ PHRASE_STATUS_ERROR = (
     'Неизвестный статус домашки.'
     '\nСтатус домашки: {status}'
 )
+PHRASE_JSON_ERROR = (
+    'Сервер вернул некорректный json'
+)
 VERDICTS = {
     'reviewing': 'Работа взята в ревью.',
     'approved': 'Ревьюеру всё понравилось, работа зачтена!',
@@ -75,6 +78,8 @@ def get_homeworks(current_timestamp):
         ))
 
     homeworks_json = homework_statuses.json()
+    if type(homeworks_json['homeworks']) != list:
+        raise TypeError(PHRASE_JSON_ERROR)
 
     for key in ('error', 'code'):
         if key in homeworks_json:
