@@ -109,7 +109,7 @@ def main():
                 logging.info(TELEGRAM_SEND_MESSAGE)
         except Exception as exception:
             try:
-                # send_message(f'{exception}')
+                send_message(f'{exception}')
                 logging.error(
                     MAIN_EXCEPTION.format(exception=exception),
                     exc_info=True
